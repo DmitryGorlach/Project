@@ -1,8 +1,9 @@
 package by.epam.hotel.command.impl;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -56,15 +57,15 @@ public class ChangeStatusOrderCommand implements Command {
 			page = refreshWithChanges(request);
 			request.setAttribute(
 					PARAM_ACTION_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(
+					ConfigurationManager.getProperty(
 							ConfigurationManager.CHANGE_STATUS_SUCCESS_MESSAGE));
 		} catch (TechnicalException e) {
 			LOG.error("Something goes wrong, redirect to error page.", e);
 			request.setAttribute(
 					PARAM_ERROR_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(
+					ConfigurationManager.getProperty(
 							ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
-			page = ConfigurationManager.getInstance().getProperty(
+			page = ConfigurationManager.getProperty(
 					ConfigurationManager.ERROR_PAGE_PATH);
 		} catch (LogicException e) {
 			LOG.error("Something goes wrong with changing order status.", e);
@@ -75,7 +76,7 @@ public class ChangeStatusOrderCommand implements Command {
 	}
 
 	private String refreshWithChanges(HttpServletRequest request) {
-		ArrayList<Order> orderList;
+		List<Order> orderList;
 		try {
 			orderList = FindOrderLogic.findAllOrder();
 			request.setAttribute(PARAM_ORDER_LIST, orderList);
@@ -83,12 +84,12 @@ public class ChangeStatusOrderCommand implements Command {
 			LOG.error("Something goes wrong, redirect to error page.", e);
 			request.setAttribute(
 					PARAM_ERROR_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(
+					ConfigurationManager.getProperty(
 							ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
-			return ConfigurationManager.getInstance().getProperty(
+			return ConfigurationManager.getProperty(
 					ConfigurationManager.ERROR_PAGE_PATH);
 		}
-		return ConfigurationManager.getInstance().getProperty(
+		return ConfigurationManager.getProperty(
 				ConfigurationManager.ORDER_LIST_PATH);
 	}
 }

@@ -1,18 +1,20 @@
 package by.epam.hotel.manager;
 
-import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /**
  * The Class ConfigurationManager.
  */
 public class ConfigurationManager {
 
-	/** The instance. */
-	private static ConfigurationManager instance;
-
 	/** The resource bundle. */
-	private ResourceBundle resourceBundle;
+	private static ResourceBundle resourceBundle;
 
 	/** The Constant BUNDLE. */
 	private static final String BUNDLE = "resources.config";
@@ -31,21 +33,24 @@ public class ConfigurationManager {
 
 	/** The Constant ERROR_PAGE_PATH. */
 	public static final String ERROR_PAGE_PATH = "error.page.path";
-
-	/** The Constant LOGIN_PAGE_PATH. */
-	public static final String LOGIN_PAGE_PATH = "login.page.path";
-
-	/** The Constant CLIENT_PAGE_PATH. */
-	public static final String CLIENT_PAGE_PATH = "client.page.path";
-
+	
 	/** The Constant INDEX_PAGE_PATH. */
 	public static final String INDEX_PAGE_PATH = "index.page.path";
-
+	
 	/** The Constant ADMIN_PAGE_PATH. */
 	public static final String ADMIN_PAGE_PATH = "admin.page.path";
-
+	
+	/** The Constant CLIENT_PAGE_PATH. */
+	public static final String CLIENT_PAGE_PATH = "client.page.path";
+	
+	/** The Constant LOGIN_PAGE_PATH. */
+	public static final String LOGIN_PAGE_PATH = "login.page.path";
+	
 	/** The Constant CREATE_ORDER_PATH. */
 	public static final String CREATE_ORDER_PATH = "create.order.page.path";
+	
+	/** The Constant BANNED_MESSAGE. */
+	public static final String BANNED_MESSAGE = "account.was.banned";
 
 	/** The Constant CLIENT_ORDER_LIST_PATH. */
 	public static final String CLIENT_ORDER_LIST_PATH = "client.order.list.page.path";
@@ -62,9 +67,6 @@ public class ConfigurationManager {
 
 	/** The Constant REGISTRATION_PAGE_PATH. */
 	public static final String REGISTRATION_PAGE_PATH = "registration.page.path";
-
-	/** The Constant LOGIN_ERROR_MESSAGE. */
-	public static final String LOGIN_ERROR_MESSAGE = "login.error.message";
 
 	/** The Constant SERVLET_EXCEPTION_ERROR_MESSAGE. */
 	public static final String SERVLET_EXCEPTION_ERROR_MESSAGE = "servlet.exception.error.message";
@@ -87,10 +89,7 @@ public class ConfigurationManager {
 	/** The Constant DOES_NOT_HAVE_CLIENT_ORDER_MESSAGE. */
 	public static final String DOES_NOT_HAVE_CLIENT_ORDER_MESSAGE = "does.not.have.free.order";
 
-	/** The Constant BANNED_MESSAGE. */
-	public static final String BANNED_MESSAGE = "account.was.banned";
-
-	/** The Constant REGISTRATION_WAS_SUCCESSFUL_MESSAGE. */
+		/** The Constant REGISTRATION_WAS_SUCCESSFUL_MESSAGE. */
 	public static final String REGISTRATION_WAS_SUCCESSFUL_MESSAGE = "registration.was.successful";
 
 	/** The Constant REGISTRATION_WAS_INTERRUPT_MESSAGE. */
@@ -171,55 +170,47 @@ public class ConfigurationManager {
 	/** The Constant BILL_PAID_ERROR_MESSAGE. */
 	public static final String BILL_PAID_ERROR_MESSAGE = "bill.paid.error.message";
 
-	/**
-	 * Gets the single instance of ConfigurationManager.
-	 * 
-	 * @return single instance of ConfigurationManager
-	 */
-	public static ConfigurationManager getInstance() {
-		if (instance == null) {
-			instance = new ConfigurationManager();
-			instance.setResourceBundle(ResourceBundle.getBundle(BUNDLE));
-		}
-		return instance;
-	}
-	
+	/** The Constant LOG. */
+	private static final Logger LOG = LogManager.getLogger(ConfigurationManager.class);
 	
 
-	/**
-	 * Gets the resource bundle.
-	 * 
-	 * @return the resource bundle
-	 */
-	public ResourceBundle getResourceBundle() {
-		return resourceBundle;
-	}
+	 /**
+     * Gets a string for the given key from this resource bundle.
+     * <p>
+     * On the first call, this method calls private method init() to initialise current resource bundle.
+     *
+     * @param key a key that should be found in the property file.
+     * @return the string for the given key
+     * @throws NullPointerException if <code>key</code> is <code>null</code>
+     * @throws ClassCastException   if the object found for the given key is not a string
+     * @throws RuntimeException     if no resource bundle for the specified base name can be found or
+     *                              if no object for the given key can be found
+     */
+    public static String getProperty(String key) {
+        if (resourceBundle == null) {
+            init();
+        }
 
-	/**
-	 * Sets the resource bundle.
-	 * 
-	 * @param resourceBundle
-	 *            the new resource bundle
-	 */
-	public void setResourceBundle(ResourceBundle resourceBundle) {
-		this.resourceBundle = resourceBundle;
-	}
+        try {
+            return resourceBundle.getString(key);
+        } catch (MissingResourceException e) {
+            LOG.log(Level.ERROR, e.getMessage(), e);
+            throw new RuntimeException("couldn't load resources, no object for the given key can be found", e);
+        }
+    }
 
-	/**
-	 * Gets the property.
-	 * 
-	 * @param property
-	 *            the property
-	 * @return the property
-	 */
-	public String getProperty(String property) {
-		if (resourceBundle == null) {
-			instance.setResourceBundle(ResourceBundle.getBundle(BUNDLE));
-		}
-		return (String) resourceBundle.getObject(property);
-	}
-	
-	public void changeResource(Locale locale) {
-		resourceBundle = ResourceBundle.getBundle(BUNDLE, locale);
-	}
+    /**
+     * Init current resource bundle.
+     *
+     * @throws RuntimeException if no resource bundle for the specified base name can be found
+     */
+    private static void init() {
+        try {
+            resourceBundle = ResourceBundle.getBundle(BUNDLE);
+        } catch (MissingResourceException e) {
+            LOG.log(Level.ERROR, e.getMessage(), e);
+            throw new RuntimeException("couldn't load resources, no resource bundle for the specified base name can be found", e);
+        }
+    }
+
 }

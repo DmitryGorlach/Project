@@ -76,7 +76,7 @@
 					key="createorder.addorderinfo" /></span><br> <input type="text"
 				name="description" size="100">
 			<hr />
-			<table class="table table-striped">
+			<table class="table table-bordered table-hover" id="container-wraper">
 				<thead>
 					<tr>
 						<th><fmt:message key="clientorders.free-room-info" /></th>

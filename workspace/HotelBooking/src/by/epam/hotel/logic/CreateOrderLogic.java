@@ -26,9 +26,6 @@ public class CreateOrderLogic {
 	/** The Constant LOG. */
 	private static final Logger LOG = LogManager.getLogger(CreateOrderLogic.class);
 
-	/** The Constant PARAM_ERROR_MESSAGE. */
-	public static final String PARAM_ERROR_MESSAGE = "errorMessage";
-
 	/** The Constant PARAM_DATE_FORMAT. */
 	private static final String PARAM_DATE_FORMAT = "yyyy-MM-dd";
 
@@ -48,6 +45,7 @@ public class CreateOrderLogic {
 	 */
 	public static void createOrder(Order order, User user, String idRoom,
 			String dateIn, String dateOut) throws TechnicalException, LogicException {
+		LOG.info("Create 'Order'...");
 		SimpleDateFormat format = new SimpleDateFormat(PARAM_DATE_FORMAT);
 		OrderDAO orderDAO = new OrderDaoImpl();
 		RoomDAO roomDAO = new RoomDaoImpl();
@@ -58,27 +56,23 @@ public class CreateOrderLogic {
 			} catch (ParseException e) {
 				throw new TechnicalException();
 			}
-			if (CreateOrderLogic.checkDate(order.getDateIn(),
-					order.getDateOut())) {
+			if (CreateOrderLogic.checkDate(order.getDateIn(),order.getDateOut())) {
 				order.setUser(user);
 				try {
 					order.setRoom(roomDAO.findRoomById(Integer.parseInt(idRoom)));
 					orderDAO.createOrder(order);
 				} catch (DAOException e) {
-					throw new TechnicalException();
+					throw new TechnicalException(e);
 				}
 			} else {
 				throw new LogicException(
-						ConfigurationManager
-								.getInstance()
-								.getProperty(
-										ConfigurationManager.WRONG_DATE_EXCEPTION_MESSAGE));
+						ConfigurationManager.getProperty(ConfigurationManager.WRONG_DATE_EXCEPTION_MESSAGE));
 			}
 		} else {
-			throw new LogicException(ConfigurationManager.getInstance()
-					.getProperty(
-							ConfigurationManager.CREATE_ORDER_PROBLEM_MESSAGE));
+			throw new LogicException(
+							ConfigurationManager.getProperty(ConfigurationManager.CREATE_ORDER_PROBLEM_MESSAGE));
 		}
+		
 	}
 
 	/**

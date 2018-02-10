@@ -1,9 +1,9 @@
 package by.epam.hotel.dao;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import by.epam.hotel.entity.Order;
-import by.epam.hotel.entity.enumeration.OrderStatus;
+import by.epam.hotel.entity.OrderStatus;
 import by.epam.hotel.exception.DAOException;
 
 /**
@@ -25,7 +25,7 @@ public interface OrderDAO {
 	 * @return the array list
 	 * @throws DAOException the DAO level exception
 	 */
-	ArrayList<Order> findAllOrders() throws DAOException;
+	List<Order> findAllOrders() throws DAOException;
 
 	/**
 	 * Find user orders.
@@ -34,7 +34,7 @@ public interface OrderDAO {
 	 * @return the array list
 	 * @throws DAOException the DAO level exception
 	 */
-	ArrayList<Order> findUserOrders(int idUser) throws DAOException;
+	List<Order> findUserOrders(int idUser) throws DAOException;
 
 	/**
 	 * Delete order by id.

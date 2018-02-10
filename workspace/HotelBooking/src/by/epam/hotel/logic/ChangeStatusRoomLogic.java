@@ -2,7 +2,7 @@ package by.epam.hotel.logic;
 
 import by.epam.hotel.dao.RoomDAO;
 import by.epam.hotel.dao.impl.RoomDaoImpl;
-import by.epam.hotel.entity.enumeration.RoomStatus;
+import by.epam.hotel.entity.RoomStatus;
 import by.epam.hotel.exception.DAOException;
 import by.epam.hotel.exception.LogicException;
 import by.epam.hotel.exception.TechnicalException;
@@ -36,23 +36,17 @@ public class ChangeStatusRoomLogic {
 		if (idRoom != null) {
 			if (PARAM_STATUS_EMPTY.equals(statusRoom)) {
 				throw new LogicException(
-						ConfigurationManager
-								.getInstance()
-								.getProperty(
-										ConfigurationManager.CHOOSE_ACTION_ERROR_MESSAGE));
+						ConfigurationManager.getProperty(ConfigurationManager.CHOOSE_ACTION_ERROR_MESSAGE));
 			}
 			try {
 				roomDAO.changeRoomStatus(Integer.parseInt(idRoom),
 						RoomStatus.valueOf(statusRoom));
 			} catch (DAOException e) {
-				throw new TechnicalException();
+				throw new TechnicalException(e);
 			}
 		} else {
 			throw new LogicException(
-					ConfigurationManager
-							.getInstance()
-							.getProperty(
-									ConfigurationManager.CHANGE_ROOM_STATUS_ERROR_MESSAGE));
+					ConfigurationManager.getProperty(ConfigurationManager.CHANGE_ROOM_STATUS_ERROR_MESSAGE));
 		}
 	}
 }

@@ -56,7 +56,7 @@
 	</c:if>
 	<!-- Room administration -->
 	<div class="container pull-center" id="container-wraper">
-		<table class="table table-striped">
+		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
 					<th><fmt:message key="roomadministration.roomlist" /></th>

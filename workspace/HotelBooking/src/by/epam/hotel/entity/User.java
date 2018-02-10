@@ -1,9 +1,5 @@
 package by.epam.hotel.entity;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import by.epam.hotel.entity.enumeration.AccessLevel;
-
 /**
  * The Class User.
  */
@@ -13,10 +9,6 @@ public class User extends Entity {
 	 * The Constant serialVersionUID.
 	 */
 	private static final long serialVersionUID = 5824250458152789792L;
-
-
-	/** The Constant LOG. */
-	private static final Logger LOG = LogManager.getLogger(User.class);
 
 
 	/** The login. */
@@ -47,7 +39,7 @@ public class User extends Entity {
 	 * Instantiates a new user.
 	 */
 	public User() {
-		LOG.info("Create 'User' object.");
+
 	}
 
 	/**

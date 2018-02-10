@@ -19,8 +19,7 @@ import by.epam.hotel.manager.ConfigurationManager;
 public class DeleteOrderCommand implements Command {
 
 	/** The Constant LOG. */
-	private static final Logger LOG = LogManager
-			.getLogger(DeleteOrderCommand.class);
+	private static final Logger LOG = LogManager.getLogger(DeleteOrderCommand.class);
 
 	/** The Constant PARAM_CLIENT_ORDER. */
 	private static final String PARAM_CLIENT_ORDER = "clientOrder";
@@ -35,7 +34,7 @@ public class DeleteOrderCommand implements Command {
 	private static final String PARAM_ERROR_MESSAGE = "errorMessage";
 
 	/** The Constant PARAM_ACTION_MESSAGE. */
-	public static final String PARAM_ACTION_MESSAGE = "actionMessage";
+	private static final String PARAM_ACTION_MESSAGE = "actionMessage";
 
 	/*
 	 * (non-Javadoc)
@@ -52,14 +51,14 @@ public class DeleteOrderCommand implements Command {
 			boolean removed = DeleteOrderLogic.deleteOrder(idOrder);
 			page = refreshWithChanges(request);
 			if (removed) {
-				request.setAttribute(PARAM_ACTION_MESSAGE, ConfigurationManager.getInstance()
-						.getProperty(ConfigurationManager.DELETE_ORDER_SUCCESS_MESSAGE));
+				request.setAttribute(PARAM_ACTION_MESSAGE, ConfigurationManager.
+						getProperty(ConfigurationManager.DELETE_ORDER_SUCCESS_MESSAGE));
 			}
 		} catch (TechnicalException e) {
 			LOG.error("Something goes wrong, redirect to error page.", e);
 			request.setAttribute(PARAM_ERROR_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
-			page = ConfigurationManager.getInstance().getProperty(ConfigurationManager.ERROR_PAGE_PATH);
+					ConfigurationManager.getProperty(ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
+			page = ConfigurationManager.getProperty(ConfigurationManager.ERROR_PAGE_PATH);
 		} catch (LogicException e) {
 			LOG.error("Something goes wrong with deleting order.", e);
 			request.setAttribute(PARAM_ERROR_MESSAGE, e);
@@ -75,9 +74,9 @@ public class DeleteOrderCommand implements Command {
 		} catch (TechnicalException e) {
 			LOG.error("Something goes wrong, redirect to error page.", e);
 			request.setAttribute(PARAM_ERROR_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
-			return ConfigurationManager.getInstance().getProperty(ConfigurationManager.ERROR_PAGE_PATH);
+					ConfigurationManager.getProperty(ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
+			return ConfigurationManager.getProperty(ConfigurationManager.ERROR_PAGE_PATH);
 		}
-		return ConfigurationManager.getInstance().getProperty(ConfigurationManager.CLIENT_ORDER_LIST_PATH);
+		return ConfigurationManager.getProperty(ConfigurationManager.CLIENT_ORDER_LIST_PATH);
 	}
 }

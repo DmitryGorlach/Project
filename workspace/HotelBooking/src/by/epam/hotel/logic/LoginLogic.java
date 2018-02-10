@@ -30,7 +30,7 @@ public class LoginLogic {
 		try {
 			user = userDAO.findUserByLoginPassword(login, password.hashCode());
 		} catch (DAOException e) {
-			throw new TechnicalException();
+			throw new TechnicalException(e);
 		}
 		return user;
 	}

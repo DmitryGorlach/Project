@@ -16,10 +16,10 @@ public class DifferenceDateTag extends TagSupport {
 	private static final long serialVersionUID = -1170111364672775287L;
 
 	/** The Constant PARAM_DATE_FORMAT. */
-	public static final String PARAM_DATE_FORMAT = "yyyy-MM-dd";
+	private static final String PARAM_DATE_FORMAT = "yyyy-MM-dd";
 
 	/** The Constant PARAM_DIFFERENCE_DAY. */
-	public static final String PARAM_DIFFERENCE_DAY = "diffDay";
+	private static final String PARAM_DIFFERENCE_DAY = "diffDay";
 
 	/** The date out. */
 	private String dateOut;
@@ -56,8 +56,12 @@ public class DifferenceDateTag extends TagSupport {
 	public int doStartTag() throws JspException {
 		try {
 			long difference;
+			 int hourInDay = 24;
+		     int minuteInHour = 60;
+		     int secondInMinute = 60;
+		     int millisecInSecond = 1000;
 			difference = (getTime(dateOut) - getTime(dateIn))
-					/ (1000 * 60 * 60 * 24);
+					/ (millisecInSecond * secondInMinute * minuteInHour * hourInDay);
 
 			pageContext.getRequest().setAttribute(PARAM_DIFFERENCE_DAY,
 					difference);

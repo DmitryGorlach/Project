@@ -1,6 +1,7 @@
 package by.epam.hotel.command.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
@@ -41,7 +42,7 @@ public class ShowClientBillCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request) {
 		String page = null;
-		ArrayList<Bill> clientBill = null;
+		List<Bill> clientBill = null;
 		User user = (User) request.getSession().getAttribute(PARAM_USER);
 		try {
 			clientBill = FindBillLogic.findClientBill(user.getId());
@@ -50,21 +51,16 @@ public class ShowClientBillCommand implements Command {
 			} else {
 				request.setAttribute(
 						PARAM_ERROR_MESSAGE,
-						ConfigurationManager
-								.getInstance()
-								.getProperty(
-										ConfigurationManager.DOES_NOT_HAVE_BILL_MESSAGE));
+						ConfigurationManager.getProperty(ConfigurationManager.DOES_NOT_HAVE_BILL_MESSAGE));
 			}
-			page = ConfigurationManager.getInstance().getProperty(
-					ConfigurationManager.BILL_LIST_PATH);
+			page = ConfigurationManager.getProperty(ConfigurationManager.BILL_LIST_PATH);
+			LOG.info("Show clients bills...");
 		} catch (TechnicalException e) {
 			LOG.error("Something goes wrong, redirect to error page.", e);
-			request.setAttribute(
-					PARAM_ERROR_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(
-							ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
-			page = ConfigurationManager.getInstance().getProperty(
-					ConfigurationManager.ERROR_PAGE_PATH);
+			request.setAttribute(PARAM_ERROR_MESSAGE,
+					ConfigurationManager.getProperty(ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
+			
+			page = ConfigurationManager.getProperty(ConfigurationManager.ERROR_PAGE_PATH);
 		}
 		return page;
 	}

@@ -2,10 +2,6 @@ package by.epam.hotel.entity;
 
 import java.util.Date;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import by.epam.hotel.entity.enumeration.BillStatus;
-
 /**
  * The Class Bill.
  */
@@ -15,8 +11,6 @@ public class Bill extends Entity{
 	
 	private static final long serialVersionUID = -1969181218432740736L;
 
-	/** The Constant LOG. */
-	private static final Logger LOG = LogManager.getLogger(Bill.class);
 	
 	/** The status. */
 	private BillStatus status;
@@ -34,7 +28,7 @@ public class Bill extends Entity{
 	 * Instantiates a new bill.
 	 */
 	public Bill() {
-		LOG.info("Create 'Bill' object.");
+	
 	}
 
 	

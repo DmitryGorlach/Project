@@ -14,11 +14,9 @@ public class TotalCostTag extends TagSupport {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -1170111364672775287L;
 
-	/** The Constant PARAM_DATE_FORMAT. */
-	public static final String PARAM_DATE_FORMAT = "yyyy-MM-dd";
-
 	/** The Constant PARAM_TOTAL_SUM. */
-	public static final String PARAM_TOTAL_SUM = "totalSum";
+	private static final String PARAM_TOTAL_SUM = "totalSum";
+	
 
 	/** The difference day. */
 	private String differenceDay;

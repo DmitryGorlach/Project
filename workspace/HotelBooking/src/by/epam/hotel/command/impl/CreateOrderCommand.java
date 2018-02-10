@@ -1,7 +1,7 @@
 package by.epam.hotel.command.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,9 +10,9 @@ import org.apache.logging.log4j.Logger;
 
 import by.epam.hotel.command.Command;
 import by.epam.hotel.entity.Order;
+import by.epam.hotel.entity.OrderStatus;
 import by.epam.hotel.entity.Room;
 import by.epam.hotel.entity.User;
-import by.epam.hotel.entity.enumeration.OrderStatus;
 import by.epam.hotel.exception.LogicException;
 import by.epam.hotel.exception.TechnicalException;
 import by.epam.hotel.logic.CreateOrderLogic;
@@ -25,8 +25,7 @@ import by.epam.hotel.manager.ConfigurationManager;
 public class CreateOrderCommand implements Command {
 
 	/** The Constant LOG. */
-	private static final Logger LOG = LogManager
-			.getLogger(CreateOrderCommand.class);
+	private static final Logger LOG = LogManager.getLogger(CreateOrderCommand.class);
 
 	/** The Constant PARAM_FREE_ROOM. */
 	private static final String PARAM_FREE_ROOM = "freeRoom";
@@ -35,7 +34,7 @@ public class CreateOrderCommand implements Command {
 	private static final String PARAM_ERROR_MESSAGE = "errorMessage";
 
 	/** The Constant PARAM_ACTION_MESSAGE. */
-	public static final String PARAM_ACTION_MESSAGE = "actionMessage";
+	private static final String PARAM_ACTION_MESSAGE = "actionMessage";
 
 	/** The Constant PARAM_DATE_OF_ARRIVAL. */
 	private static final String PARAM_DATE_OF_ARRIVAL = "dateIn";
@@ -73,20 +72,20 @@ public class CreateOrderCommand implements Command {
 		String dateOut = request.getParameter(PARAM_DATE_OF_DEPARTURE);
 		try {
 			CreateOrderLogic.createOrder(order, user, idRoom, dateIn, dateOut);
-			ArrayList<Room> freeRoom = FindRoomLogic.findFreeRoom();
+			List<Room> freeRoom = FindRoomLogic.findFreeRoom();
 			request.setAttribute(PARAM_FREE_ROOM, freeRoom);
 			page = refreshWithChanges(request);
 			request.setAttribute(
 					PARAM_ACTION_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(
+					ConfigurationManager.getProperty(
 							ConfigurationManager.CREATE_ORDER_SUCCESS_MESSAGE));
 		} catch (TechnicalException e) {
 			LOG.error("Something goes wrong, redirect to error page.", e);
 			request.setAttribute(
 					PARAM_ERROR_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(
+					ConfigurationManager.getProperty(
 							ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
-			page = ConfigurationManager.getInstance().getProperty(
+			page = ConfigurationManager.getProperty(
 					ConfigurationManager.ERROR_PAGE_PATH);
 		} catch (LogicException e) {
 			LOG.error("Something goes wrong with creating order.", e);
@@ -97,7 +96,7 @@ public class CreateOrderCommand implements Command {
 	}
 
 	private String refreshWithChanges(HttpServletRequest request) {
-		ArrayList<Room> freeRoom;
+		List<Room> freeRoom;
 		try {
 			freeRoom = FindRoomLogic.findFreeRoom();
 			request.setAttribute(PARAM_FREE_ROOM, freeRoom);
@@ -105,12 +104,12 @@ public class CreateOrderCommand implements Command {
 			LOG.error("Something goes wrong, redirect to error page.", e);
 			request.setAttribute(
 					PARAM_ERROR_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(
+					ConfigurationManager.getProperty(
 							ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
-			return ConfigurationManager.getInstance().getProperty(
+			return ConfigurationManager.getProperty(
 					ConfigurationManager.ERROR_PAGE_PATH);
 		}
-		return ConfigurationManager.getInstance().getProperty(
+		return ConfigurationManager.getProperty(
 				ConfigurationManager.CREATE_ORDER_PATH);
 	}
 }

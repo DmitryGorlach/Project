@@ -7,15 +7,13 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import by.epam.hotel.dao.AbstractDAO;
 import by.epam.hotel.dao.BillDAO;
 import by.epam.hotel.dao.OrderDAO;
-import by.epam.hotel.dao.abstraction.AbstractDAO;
 import by.epam.hotel.entity.Bill;
-import by.epam.hotel.entity.enumeration.BillStatus;
+import by.epam.hotel.entity.BillStatus;
 import by.epam.hotel.exception.DAOException;
 
 /**
@@ -23,8 +21,7 @@ import by.epam.hotel.exception.DAOException;
  */
 public class BillDaoImpl extends AbstractDAO implements BillDAO {
 
-	/** The Constant LOG. */
-	private static final Logger LOG = LogManager.getLogger(BillDaoImpl.class);
+
 
 	/** The Constant PARAM_DATE_FORMAT. */
 	public static final String PARAM_DATE_FORMAT = "yyyy-MM-dd";
@@ -93,7 +90,7 @@ public class BillDaoImpl extends AbstractDAO implements BillDAO {
 						.getInt(PARAM_BILL_ORDER_ID)));
 			}
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -122,7 +119,7 @@ public class BillDaoImpl extends AbstractDAO implements BillDAO {
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -157,7 +154,7 @@ public class BillDaoImpl extends AbstractDAO implements BillDAO {
 				billList.add(bill);
 			}
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -183,7 +180,7 @@ public class BillDaoImpl extends AbstractDAO implements BillDAO {
 			preparedStatement.setInt(2, idBill);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -196,10 +193,10 @@ public class BillDaoImpl extends AbstractDAO implements BillDAO {
 	 * @see by.epam.hotel.dao.IBillDAO#findUserBills(int)
 	 */
 	@Override
-	public ArrayList<Bill> findUserBills(int idUser) throws DAOException {
+	public List<Bill> findUserBills(int idUser) throws DAOException {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		ArrayList<Bill> billList = new ArrayList<Bill>();
+		List<Bill> billList = new ArrayList<Bill>();
 		OrderDAO orderDAO = new OrderDaoImpl();
 		Connection connection = null;
 		try {
@@ -219,7 +216,7 @@ public class BillDaoImpl extends AbstractDAO implements BillDAO {
 				billList.add(bill);
 			}
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);

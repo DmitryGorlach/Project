@@ -1,6 +1,6 @@
 package by.epam.hotel.command.impl;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -56,15 +56,15 @@ public class ChangeAccessLevelCommand implements Command {
 			page = refreshWithChanges(request);
 			request.setAttribute(
 					PARAM_ACTION_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(
+					ConfigurationManager.getProperty(
 							ConfigurationManager.CHANGE_STATUS_SUCCESS_MESSAGE));
 		} catch (TechnicalException e) {
 			LOG.error("Something goes wrong, redirect to error page.", e);
 			request.setAttribute(
 					PARAM_ERROR_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(
+					ConfigurationManager.getProperty(
 							ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
-			page = ConfigurationManager.getInstance().getProperty(
+			page = ConfigurationManager.getProperty(
 					ConfigurationManager.ERROR_PAGE_PATH);
 		} catch (LogicException e) {
 			LOG.error("Something goes wrong with changing user access level.",
@@ -76,19 +76,19 @@ public class ChangeAccessLevelCommand implements Command {
 	}
 
 	private String refreshWithChanges(HttpServletRequest request) {
-		ArrayList<User> userList;
+		List<User> userList;
 		try {
 			userList = FindUserLogic.findAllUser();
 			request.setAttribute(PARAM_USER_LIST, userList);
-			return ConfigurationManager.getInstance().getProperty(
+			return ConfigurationManager.getProperty(
 					ConfigurationManager.USER_ADMINISTRATION_PATH);
 		} catch (TechnicalException e) {
 			LOG.error("Something goes wrong, redirect to error page.", e);
 			request.setAttribute(
 					PARAM_ERROR_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(
+					ConfigurationManager.getProperty(
 							ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
-			return ConfigurationManager.getInstance().getProperty(
+			return ConfigurationManager.getProperty(
 					ConfigurationManager.ERROR_PAGE_PATH);
 		}
 	}

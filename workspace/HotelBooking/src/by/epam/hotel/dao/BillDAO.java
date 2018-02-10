@@ -1,9 +1,9 @@
 package by.epam.hotel.dao;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import by.epam.hotel.entity.Bill;
-import by.epam.hotel.entity.enumeration.BillStatus;
+import by.epam.hotel.entity.BillStatus;
 import by.epam.hotel.exception.DAOException;
 
 /**
@@ -25,7 +25,7 @@ public interface BillDAO {
 	 * @return the array list
 	 * @throws DAOException the DAO level exception
 	 */
-	ArrayList<Bill> findAllBills() throws DAOException;
+	List<Bill> findAllBills() throws DAOException;
 
 	/**
 	 * Find user bills.
@@ -34,7 +34,7 @@ public interface BillDAO {
 	 * @return the array list
 	 * @throws DAOException the DAO level exception
 	 */
-	ArrayList<Bill> findUserBills(int idUser) throws DAOException;
+	List<Bill> findUserBills(int idUser) throws DAOException;
 
 	/**
 	 * Change bill status by id.

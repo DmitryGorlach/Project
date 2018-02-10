@@ -2,6 +2,9 @@ package by.epam.hotel.logic;
 
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import by.epam.hotel.dao.BillDAO;
 import by.epam.hotel.dao.OrderDAO;
 import by.epam.hotel.dao.RoomDAO;
@@ -9,9 +12,9 @@ import by.epam.hotel.dao.impl.BillDaoImpl;
 import by.epam.hotel.dao.impl.OrderDaoImpl;
 import by.epam.hotel.dao.impl.RoomDaoImpl;
 import by.epam.hotel.entity.Bill;
+import by.epam.hotel.entity.BillStatus;
 import by.epam.hotel.entity.Order;
-import by.epam.hotel.entity.enumeration.BillStatus;
-import by.epam.hotel.entity.enumeration.RoomStatus;
+import by.epam.hotel.entity.RoomStatus;
 import by.epam.hotel.exception.DAOException;
 import by.epam.hotel.exception.TechnicalException;
 
@@ -19,6 +22,9 @@ import by.epam.hotel.exception.TechnicalException;
  * The Class CreateBillLogic. All logic associated with creating bill.
  */
 public class CreateBillLogic {
+	
+	/** The Constant LOG. */
+	private static final Logger LOG = LogManager.getLogger(CreateBillLogic.class);
 
 	/**
 	 * Creates the bill.
@@ -41,8 +47,9 @@ public class CreateBillLogic {
 			setBusyRoom(order.getRoom().getId());
 			billDAO.createBill(bill);
 		} catch (DAOException e) {
-			throw new TechnicalException();
+			throw new TechnicalException(e);
 		}
+		LOG.info("Creating bill is successful");
 	}
 
 	/**
@@ -66,9 +73,13 @@ public class CreateBillLogic {
 	 * @return the int
 	 */
 	private static int calculateTotalSum(Order order) {
-		int sumOfDay = (int) ((order.getDateOut().getTime() - order.getDateIn()
-				.getTime()) / (24 * 60 * 60 * 1000));
-		int totalSum = sumOfDay * order.getRoom().getCostPerDay();
-		return totalSum;
-	}
+		 int hourInDay = 24;
+	        int minuteInHour = 60;
+	        int secondInMinute = 60;
+	        int millisecInSecond = 1000;
+	        int sumOfDay = (int)(order.getDateOut().getTime() - order.getDateIn()
+	        .getTime()) / (hourInDay * minuteInHour *secondInMinute *millisecInSecond); // волшебные числа
+	        int totalSum = sumOfDay *order.getRoom().getCostPerDay();
+	        return  totalSum;
+	    }
 }

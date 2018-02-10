@@ -16,7 +16,7 @@
 <link rel="stylesheet" type="text/css" media="screen"
 	href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
 </head>
-<body>
+<body style="background-color:#d6a47ba6">
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<nav class="navbar-inner">
 			<a class="brand"><fmt:message key="client.title" /></a>
@@ -35,25 +35,31 @@
 	</div>
 	<!-- Control btn -->
 	<div class="btn-group pull-right">
+		<ul class="nav" >
+		<li>
 		<form class="navbar-form pull-right" action="main" method="POST">
 			<input type="hidden" name="command" value="showFreeRoom" />
-			<button class="btn btn-sm btn-success" type="submit">
+			<button class="btn btn-sm btn-success" style="height:40px; width:500px; font-size:30" type="submit">
 				<i class="glyphicon glyphicon-star"></i>
 				<fmt:message key="client.createorder" />
 			</button>
 		</form>
-		<form class="navbar-form pull-right" action="main" method="POST">
+		</li>
+		<li><form class="navbar-form pull-right" action="main" method="POST">
 			<input type="hidden" name="command" value="showMyOrder" />
-			<button class="btn  btn-sm btn-info" type="submit">
+			<button class="btn  btn-sm btn-info" style="height:40px; width:500px; font-size:30" type="submit">
 				<fmt:message key="client.showorder" />
 			</button>
 		</form>
-		<form class="navbar-form pull-right" action="main" method="POST">
+		</li>
+		<li><form class="navbar-form pull-right" action="main" method="POST">
 			<input type="hidden" name="command" value="showMyBill" />
-			<button class="btn btn-sm btn-warning" type="submit">
+			<button class="btn btn-sm btn-warning" style="height:40px; width:500px; font-size:30" type="submit">
 				<fmt:message key="client.showbill" />
 			</button>
 		</form>
+		</li>
+		</ul>
 	</div>
 	<!--  Message -->
 	<c:if test="${not empty errorMessage }">
@@ -64,7 +70,7 @@
 	</c:if>
 	<!-- Client info -->
 	<div class="container pull-left" id="container-wraper">
-		<table class="table table-hover">
+		<table class="table table-bordered table-hover">
 			<thead>
 				<tr>
 					<th><fmt:message key="client.info" /></th>

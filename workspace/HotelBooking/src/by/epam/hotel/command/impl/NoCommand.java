@@ -19,8 +19,7 @@ public class NoCommand implements Command {
 	 */
 	@Override
 	public String execute(HttpServletRequest request) {
-		String page = ConfigurationManager.getInstance().getProperty(
-				ConfigurationManager.INDEX_PAGE_PATH);
+		String page =ConfigurationManager.getProperty(ConfigurationManager.INDEX_PAGE_PATH);
 		return page;
 	}
 

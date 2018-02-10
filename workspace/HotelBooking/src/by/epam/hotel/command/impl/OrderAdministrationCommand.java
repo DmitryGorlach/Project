@@ -1,6 +1,6 @@
 package by.epam.hotel.command.impl;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,20 +38,18 @@ public class OrderAdministrationCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request) {
 		String page = null;
-		ArrayList<Order> orderList = null;
+		List<Order> orderList = null;
 		try {
 			orderList = FindOrderLogic.findAllOrder();
 			request.setAttribute(PARAM_ORDER_LIST, orderList);
-			page = ConfigurationManager.getInstance().getProperty(
-					ConfigurationManager.ORDER_LIST_PATH);
+			page = ConfigurationManager.getProperty(ConfigurationManager.ORDER_LIST_PATH);
+			LOG.info("Show clients orders...");
 		} catch (TechnicalException e) {
 			LOG.error("Something goes wrong, redirect to error page.", e);
 			request.setAttribute(
 					PARAM_ERROR_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(
-							ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
-			page = ConfigurationManager.getInstance().getProperty(
-					ConfigurationManager.ERROR_PAGE_PATH);
+							ConfigurationManager.getProperty(ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
+			page = ConfigurationManager.getProperty(ConfigurationManager.ERROR_PAGE_PATH);
 		}
 		return page;
 	}

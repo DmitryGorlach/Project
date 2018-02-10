@@ -19,7 +19,7 @@ public class RegistrationLogic {
 	private static final String PARAM_EMAIL_VALIDATION = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 	/** The Constant PARAM_PASSWORD_VALIDATION. */
-	private static final String PARAM_PASSWORD_VALIDATION = "^[a-zA-Z][a-zA-Z0-9-_\\.]{1,20}$";
+	private static final String PARAM_PASSWORD_VALIDATION = "^[a-zA-Z][a-zA-Z0-9-_!@#$%^&*\\.]{1,20}$";
 
 	/** The Constant PARAM_NAME_VALIDATION. */
 	private static final String PARAM_NAME_VALIDATION = "^[А-яЁёa-zA-Z]{1,20}$";
@@ -55,16 +55,13 @@ public class RegistrationLogic {
 					user.getPassword()) == null) {
 				userDAO.addUser(user);
 			} else {
-				throw new LogicException(
-						ConfigurationManager
-								.getInstance()
-								.getProperty(
-										ConfigurationManager.REGISTRATION_WAS_INTERRUPT_MESSAGE));
+				throw new LogicException(ConfigurationManager
+						.getProperty(ConfigurationManager.REGISTRATION_WAS_INTERRUPT_MESSAGE));
 			}
 		} catch (NumberFormatException e) {
-			throw new TechnicalException();
+			throw new TechnicalException(e);
 		} catch (DAOException e) {
-			throw new TechnicalException();
+			throw new TechnicalException(e);
 		}
 	}
 
@@ -83,19 +80,19 @@ public class RegistrationLogic {
 	private static void validation(User user, String password,
 			String passwordAgain) throws LogicException {
 		validationField(PARAM_LOGIN_VALIDATION,
-				ConfigurationManager.LOGIN_IS_NOT_VALID, user.getLogin());
+				ConfigurationManager.getProperty(ConfigurationManager.LOGIN_IS_NOT_VALID), user.getLogin());
 		validationPassword(password, passwordAgain);
 		validationField(PARAM_EMAIL_VALIDATION,
-				ConfigurationManager.EMAIL_IS_NOT_VALID, user.getEmail());
+				ConfigurationManager.getProperty(ConfigurationManager.EMAIL_IS_NOT_VALID), user.getEmail());
 		validationField(PARAM_NAME_VALIDATION,
-				ConfigurationManager.NAME_IS_NOT_VALID, user.getName());
+				ConfigurationManager.getProperty(ConfigurationManager.NAME_IS_NOT_VALID), user.getName());
 		validationField(PARAM_NAME_VALIDATION,
-				ConfigurationManager.FIRST_NAME_IS_NOT_VALID,
+				ConfigurationManager.getProperty(ConfigurationManager.FIRST_NAME_IS_NOT_VALID),
 				user.getFirstName());
 		validationField(PARAM_NAME_VALIDATION,
-				ConfigurationManager.SURNAME_IS_NOT_VALID, user.getSurname());
+				ConfigurationManager.getProperty(ConfigurationManager.SURNAME_IS_NOT_VALID), user.getSurname());
 		validationField(PARAM_AGE_VALIDATION,
-				ConfigurationManager.AGE_IS_NOT_VALID,
+				ConfigurationManager.getProperty(ConfigurationManager.AGE_IS_NOT_VALID),
 				String.valueOf(user.getAge()));
 	}
 
@@ -112,8 +109,7 @@ public class RegistrationLogic {
 	private static void validationPassword(String password, String passwordAgain) throws LogicException {
 		if (!password.equals(passwordAgain)
 				&& Pattern.matches(PARAM_PASSWORD_VALIDATION, password)) {
-			throw new LogicException(ConfigurationManager.getInstance()
-					.getProperty(ConfigurationManager.PASSWORD_IS_NOT_VALID));
+			throw new LogicException(ConfigurationManager.getProperty(ConfigurationManager.PASSWORD_IS_NOT_VALID));
 		}
 	}
 
@@ -130,8 +126,7 @@ public class RegistrationLogic {
 	private static void validationField(String pattern, String errorMessage,
 			String field) throws LogicException {
 		if (!Pattern.matches(pattern, field)) {
-			throw new LogicException(ConfigurationManager.getInstance()
-					.getProperty(errorMessage));
+			throw new LogicException(errorMessage);
 		}
 	}
 }

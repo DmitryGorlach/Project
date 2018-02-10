@@ -3,7 +3,7 @@ package by.epam.hotel.logic;
 import by.epam.hotel.dao.BillDAO;
 import by.epam.hotel.dao.impl.BillDaoImpl;
 import by.epam.hotel.entity.Bill;
-import by.epam.hotel.entity.enumeration.BillStatus;
+import by.epam.hotel.entity.BillStatus;
 import by.epam.hotel.exception.DAOException;
 import by.epam.hotel.exception.LogicException;
 import by.epam.hotel.exception.TechnicalException;
@@ -31,19 +31,16 @@ public class PayBillLogic {
 			try {
 				Bill bill = billDAO.findBillById(Integer.parseInt(idBill));
 				if (bill.getStatus().equals(BillStatus.PAID)) {
-					throw new LogicException(
-							ConfigurationManager
-									.getInstance()
-									.getProperty(
-											ConfigurationManager.BILL_ALREADY_PAID_MESSAGE));
+					throw new LogicException(ConfigurationManager
+							.getProperty(ConfigurationManager.BILL_ALREADY_PAID_MESSAGE));
 				}
 				billDAO.changeBillStatusById(Integer.parseInt(idBill),
 						BillStatus.PAID);
 			} catch (DAOException e) {
-				throw new TechnicalException();
+				throw new TechnicalException(e);
 			}
 		} else {
-			throw new LogicException(ConfigurationManager.getInstance()
+			throw new LogicException(ConfigurationManager
 					.getProperty(ConfigurationManager.BILL_PAID_ERROR_MESSAGE));
 		}
 	}

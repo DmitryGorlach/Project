@@ -1,9 +1,9 @@
 package by.epam.hotel.dao;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import by.epam.hotel.entity.Room;
-import by.epam.hotel.entity.enumeration.RoomStatus;
+import by.epam.hotel.entity.RoomStatus;
 import by.epam.hotel.exception.DAOException;
 
 /**
@@ -18,7 +18,7 @@ public interface RoomDAO {
 	 * @throws DAOException
 	 *             the DAO level exception
 	 */
-	ArrayList<Room> findAllRoom() throws DAOException;
+	List<Room> findAllRoom() throws DAOException;
 
 	/**
 	 * Find room by id.

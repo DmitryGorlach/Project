@@ -2,7 +2,7 @@ package by.epam.hotel.logic;
 
 import by.epam.hotel.dao.OrderDAO;
 import by.epam.hotel.dao.impl.OrderDaoImpl;
-import by.epam.hotel.entity.enumeration.OrderStatus;
+import by.epam.hotel.entity.OrderStatus;
 import by.epam.hotel.exception.DAOException;
 import by.epam.hotel.exception.LogicException;
 import by.epam.hotel.exception.TechnicalException;
@@ -15,10 +15,10 @@ import by.epam.hotel.manager.ConfigurationManager;
 public class ChangeStatusOrderLogic {
 
 	/** The Constant PARAM_ERROR_MESSAGE. */
-	public static final String PARAM_ERROR_MESSAGE = "errorMessage";
+	private static final String PARAM_ERROR_MESSAGE = "errorMessage";
 
 	/** The Constant PARAM_STATUS_EMPTY. */
-	public static final String PARAM_STATUS_EMPTY = "empty";
+	private static final String PARAM_STATUS_EMPTY = "empty";
 
 	/**
 	 * Change status order.
@@ -39,10 +39,7 @@ public class ChangeStatusOrderLogic {
 		if (idOrder != null) {
 			if (PARAM_STATUS_EMPTY.equals(statusOrder)) {
 				throw new LogicException(
-						ConfigurationManager
-								.getInstance()
-								.getProperty(
-										ConfigurationManager.CHOOSE_ACTION_ERROR_MESSAGE));
+						ConfigurationManager.getProperty(ConfigurationManager.CHOOSE_ACTION_ERROR_MESSAGE));
 			}
 			try {
 				orderDAO.changeOrderStatusById(Integer.parseInt(idOrder),
@@ -52,14 +49,11 @@ public class ChangeStatusOrderLogic {
 					CreateBillLogic.createBill(idOrder);
 				}
 			} catch (DAOException e) {
-				throw new TechnicalException();
+				throw new TechnicalException(e);
 			}
 		} else {
 			throw new LogicException(
-					ConfigurationManager
-							.getInstance()
-							.getProperty(
-									ConfigurationManager.CHANGE_STATUS_ORDER_EXCEPTION_MESSAGE));
+					ConfigurationManager.getProperty(ConfigurationManager.CHANGE_STATUS_ORDER_EXCEPTION_MESSAGE));
 		}
 	}
 }

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.logging.log4j.LogManager;
@@ -15,23 +16,21 @@ import by.epam.hotel.manager.ConfigurationManager;
 /**
  * The Class ConnectionPool.
  */
-public final class ConnectionPool {
+public final class ConnectionPool extends ConfigurationManager{
 
 	/** The Constant LOG. */
 	private static final Logger LOG = LogManager.getLogger(ConnectionPool.class);;
 
 	/** The instance. */
-	private static ConnectionPool instance;
+	private static volatile ConnectionPool instance = null; 
 
 	/** The pool. */
 	private static BlockingQueue<Connection> pool;
 
 	/** The lock. */
 	private static ReentrantLock lock = new ReentrantLock();
-
-	/** The config. */
-	private static ConfigurationManager config = ConfigurationManager
-			.getInstance();
+	
+	private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
 
 	/** The flag. */
 	private boolean flag = true;
@@ -42,18 +41,34 @@ public final class ConnectionPool {
 	 * @return single instance of ConnectionPool
 	 */
 	public static ConnectionPool getInstance() {
-		if (instance == null) {
-			try {
-				lock.lock();
-				if (instance == null) {
+		
+		if (!instanceCreated.get()) {
+			lock.lock();
+			try{
+				if(!instanceCreated.get()) {
 					instance = new ConnectionPool();
+					instanceCreated.set(true);
 				}
-			} finally {
+			}finally {
 				lock.unlock();
 			}
 		}
+		
 		return instance;
 	}
+//		if (instance == null) {
+//			try {
+//				lock.lock();
+//				if (instance == null) {
+//					instance = new ConnectionPool();
+//					
+//				}
+//			} finally {
+//				lock.unlock();
+//			}
+//		}
+//		return instance;
+//	}
 
 	/**
 	 * Instantiates a new connection pool.
@@ -67,10 +82,10 @@ public final class ConnectionPool {
 	 */
 	private static void init() {
 		LOG.info("Trying to create pool of connections...");
-		String url = config.getProperty(ConfigurationManager.DB_URL);
-		String user = config.getProperty(ConfigurationManager.DB_USER);
-		String password = config.getProperty(ConfigurationManager.DB_PASSWORD);
-		int size = Integer.parseInt(config
+		String url = ConfigurationManager.getProperty(ConfigurationManager.DB_URL);
+		String user = ConfigurationManager.getProperty(ConfigurationManager.DB_USER);
+		String password = ConfigurationManager.getProperty(ConfigurationManager.DB_PASSWORD);
+		int size = Integer.parseInt(ConfigurationManager
 				.getProperty(ConfigurationManager.DB_MAXCONN));
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
@@ -133,7 +148,7 @@ public final class ConnectionPool {
 	public void releaseConnections() {
 		flag = false;
 		Connection connection = null;
-		int realSize = Integer.parseInt(config
+		int realSize = Integer.parseInt(ConfigurationManager
 				.getProperty(ConfigurationManager.DB_MAXCONN));
 		while (realSize > 0) {
 			try {

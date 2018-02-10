@@ -1,4 +1,4 @@
-package by.epam.hotel.entity.enumeration;
+package by.epam.hotel.entity;
 
 /**
  * The Enum BillStatus.

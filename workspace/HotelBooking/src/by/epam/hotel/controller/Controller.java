@@ -98,10 +98,12 @@ public class Controller extends HttpServlet {
 	 */
 	private void processRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
 		String action = request.getParameter("command");
 		String page = null;
 		Command command = CommandFactory.createCommand(action);
 		page = command.execute(request);
+	
 		getServletContext().getRequestDispatcher(page).forward(request,
 				response);
 	}

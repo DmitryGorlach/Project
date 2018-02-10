@@ -30,7 +30,7 @@ public class LogOutCommand implements Command {
 		HttpSession session = request.getSession();
 		LOG.info("Invalidate sesssion.");
 		session.invalidate();
-		return ConfigurationManager.getInstance().getProperty(
+		return ConfigurationManager.getProperty(
 				ConfigurationManager.INDEX_PAGE_PATH);
 	}
 }

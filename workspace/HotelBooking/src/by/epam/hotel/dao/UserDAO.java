@@ -1,9 +1,9 @@
 package by.epam.hotel.dao;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import by.epam.hotel.entity.AccessLevel;
 import by.epam.hotel.entity.User;
-import by.epam.hotel.entity.enumeration.AccessLevel;
 import by.epam.hotel.exception.DAOException;
 
 /**
@@ -45,7 +45,7 @@ public interface UserDAO {
 	 * @return the array list
 	 * @throws DAOException the DAO level exception
 	 */
-	ArrayList<User> findAllUser() throws DAOException;
+	List<User> findAllUser() throws DAOException;
 
 	/**
 	 * Change user access by id.

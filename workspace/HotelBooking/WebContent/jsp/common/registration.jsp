@@ -59,7 +59,7 @@
 						<label for="password"><fmt:message
 								key="registration.password" /></label><input type="password"
 							id="password" required name="password" data-validation="custom"
-							data-validation-regexp="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$"
+							data-validation-regexp="^[a-zA-Z][a-zA-Z0-9-_!@#$%^&*\\.]{1,20}$"
 							data-validation-help="Password should start with a letter and consist of 2-20 characters"
 							placeholder="<fmt:message key="registration.password" />" />
 					</div>
@@ -69,7 +69,7 @@
 								key="registration.passwordagain" /></label><input type="password"
 							required name="passwordagain" id="passwordagain"
 							data-validation="custom" data-validation-matches-match="password"
-							data-validation-regexp="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$"
+							data-validation-regexp="^[a-zA-Z][a-zA-Z0-9-_!@#$%^&*\\.]{1,20}$"
 							data-validation-help="Must match password entered above"
 							placeholder="<fmt:message key="registration.passwordagain" />" />
 					</div>

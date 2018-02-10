@@ -2,10 +2,6 @@ package by.epam.hotel.entity;
 
 import java.util.Date;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import by.epam.hotel.entity.enumeration.OrderStatus;
-
 /**
  * The Class Order.
  */
@@ -17,11 +13,7 @@ public class Order extends Entity {
 	private static final long serialVersionUID = 5426855861483793288L;
 
 
-	/** The Constant LOG. */
-	private static final Logger LOG = LogManager.getLogger(Order.class);
-
-	
-	/** The date order. */
+		/** The date order. */
 	private Date dateOrder;
 	
 	/** The date in. */
@@ -46,7 +38,7 @@ public class Order extends Entity {
 	 * Instantiates a new order.
 	 */
 	public Order() {
-		LOG.info("Create 'Order' object.");
+		
 	}
 
 

@@ -1,11 +1,5 @@
 package by.epam.hotel.entity;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import by.epam.hotel.entity.enumeration.AppartmentCategory;
-import by.epam.hotel.entity.enumeration.RoomStatus;
-
 /**
  * The Class Room.
  */
@@ -16,10 +10,6 @@ public class Room extends Entity {
 	 */
 	private static final long serialVersionUID = -5643467530708922243L;
 
-
-	/** The Constant LOG. */
-	private static final Logger LOG = LogManager.getLogger(Room.class);
-	
 	
 	/** The room number. */
 	private int roomNumber;
@@ -43,7 +33,7 @@ public class Room extends Entity {
 	 * Instantiates a new room.
 	 */
 	public Room() {
-		LOG.info("Create 'Room' object.");
+		
 	}
 	/**
 	 * Gets the room number.

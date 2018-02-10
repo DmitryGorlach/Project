@@ -7,8 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import by.epam.hotel.command.Command;
+import by.epam.hotel.entity.AccessLevel;
 import by.epam.hotel.entity.User;
-import by.epam.hotel.entity.enumeration.AccessLevel;
 import by.epam.hotel.exception.TechnicalException;
 import by.epam.hotel.logic.LoginLogic;
 import by.epam.hotel.manager.ConfigurationManager;
@@ -19,8 +19,8 @@ import by.epam.hotel.manager.ConfigurationManager;
 public class LoginCommand implements Command {
 
 	/** The Constant LOG. */
-	private static final Logger LOG = LogManager
-			.getLogger(LoginCommand.class);
+	private static final Logger LOG = LogManager.getLogger(LoginCommand.class);
+	
 	/** The Constant PARAM_USER. */
 	private static final String PARAM_USER = "user";
 
@@ -33,6 +33,10 @@ public class LoginCommand implements Command {
 	/** The Constant PARAM_ERROR_MESSAGE. */
 	private static final String PARAM_ERROR_MESSAGE = "errorMessage";
 
+		/** The Constant LOGIN_ERROR_MESSAGE. */
+	private static final String LOGIN_ERROR_MESSAGE = "login.error.message";
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -54,22 +58,17 @@ public class LoginCommand implements Command {
 				session.setAttribute(PARAM_USER, user);
 				page = checkAccessLevel(user.getAccess(), request);
 			} else {
-				request.setAttribute(
-						PARAM_ERROR_MESSAGE,
-						ConfigurationManager.getInstance().getProperty(
-								ConfigurationManager.LOGIN_ERROR_MESSAGE));
+				request.setAttribute(PARAM_ERROR_MESSAGE,
+						ConfigurationManager.getProperty(LOGIN_ERROR_MESSAGE));
 				
-				page = ConfigurationManager.getInstance().getProperty(
-						ConfigurationManager.LOGIN_PAGE_PATH);
+				page = ConfigurationManager.getProperty(ConfigurationManager.LOGIN_PAGE_PATH);
 			}
 		} catch (TechnicalException e) {
 			LOG.error("Something goes wrong, redirect to error page.", e);
-			request.setAttribute(
-					"errorMessage",
-					ConfigurationManager.getInstance().getProperty(
-							ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
-			page = ConfigurationManager.getInstance().getProperty(
-					ConfigurationManager.ERROR_PAGE_PATH);
+			request.setAttribute(PARAM_ERROR_MESSAGE,
+					ConfigurationManager.getProperty(ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
+			
+			page = ConfigurationManager.getProperty(ConfigurationManager.ERROR_PAGE_PATH);
 		}
 		return page;
 	}
@@ -89,22 +88,17 @@ public class LoginCommand implements Command {
 		if (check != null) {
 			switch (check) {
 			case ADMIN:
-				return ConfigurationManager.getInstance().getProperty(
-						ConfigurationManager.ADMIN_PAGE_PATH);
+				return ConfigurationManager.getProperty(ConfigurationManager.ADMIN_PAGE_PATH);
 			case CLIENT:
-				return ConfigurationManager.getInstance().getProperty(
-						ConfigurationManager.CLIENT_PAGE_PATH);
+				return ConfigurationManager.getProperty(ConfigurationManager.CLIENT_PAGE_PATH);
 			case GUEST:
-				request.setAttribute(
-						PARAM_ERROR_MESSAGE,
-						ConfigurationManager.getInstance().getProperty(
-								ConfigurationManager.BANNED_MESSAGE));
-				return ConfigurationManager.getInstance().getProperty(
-						ConfigurationManager.INDEX_PAGE_PATH);
+				request.setAttribute(PARAM_ERROR_MESSAGE,
+						ConfigurationManager.getProperty(ConfigurationManager.BANNED_MESSAGE));
+				
+				return ConfigurationManager.getProperty(ConfigurationManager.INDEX_PAGE_PATH);
 			}
 		}
-		return ConfigurationManager.getInstance().getProperty(
-				ConfigurationManager.ERROR_PAGE_PATH);
+		return ConfigurationManager.getProperty(ConfigurationManager.ERROR_PAGE_PATH);
 
 	}
 }

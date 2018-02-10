@@ -5,20 +5,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import by.epam.hotel.dao.AbstractDAO;
 import by.epam.hotel.dao.RoomDAO;
-import by.epam.hotel.dao.abstraction.AbstractDAO;
+import by.epam.hotel.entity.AppartmentCategory;
 import by.epam.hotel.entity.Room;
-import by.epam.hotel.entity.enumeration.AppartmentCategory;
-import by.epam.hotel.entity.enumeration.RoomStatus;
+import by.epam.hotel.entity.RoomStatus;
 import by.epam.hotel.exception.DAOException;
 
 public class RoomDaoImpl extends AbstractDAO implements RoomDAO {
 
-	private static final Logger LOG = LogManager.getLogger(RoomDaoImpl.class);
 
 	public static final String PARAM_ID = "id_room";
 	public static final String PARAM_ROOM_NUMBER = "roomNumber";
@@ -39,9 +36,9 @@ public class RoomDaoImpl extends AbstractDAO implements RoomDAO {
 			+ "SET status = ? WHERE id_room = ? ";
 
 	@Override
-	public ArrayList<Room> findAllRoom() throws DAOException {
+	public List<Room> findAllRoom() throws DAOException {
 
-		ArrayList<Room> roomList = new ArrayList<Room>();
+		List<Room> roomList = new ArrayList<Room>();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		Connection connection = null;
@@ -66,7 +63,7 @@ public class RoomDaoImpl extends AbstractDAO implements RoomDAO {
 				roomList.add(room);
 			}
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -103,7 +100,7 @@ public class RoomDaoImpl extends AbstractDAO implements RoomDAO {
 				room.setDescription(resultSet.getString(PARAM_DESCRIPTION));
 			}
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -123,7 +120,7 @@ public class RoomDaoImpl extends AbstractDAO implements RoomDAO {
 			preparedStatement.setInt(2, id);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);

@@ -12,8 +12,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import by.epam.hotel.entity.AccessLevel;
 import by.epam.hotel.entity.User;
-import by.epam.hotel.entity.enumeration.AccessLevel;
 import by.epam.hotel.manager.ConfigurationManager;
 
 /**
@@ -47,26 +47,20 @@ public class SecurityClient implements Filter {
 			AccessLevel userAccess = user.getAccess();
 			if (!userAccess.equals(AccessLevel.CLIENT)) {
 				RequestDispatcher dispatcher = request
-						.getRequestDispatcher(ConfigurationManager
-								.getInstance().getProperty(
-										ConfigurationManager.INDEX_PAGE_PATH));
+						.getRequestDispatcher(
+										ConfigurationManager.getProperty(ConfigurationManager.INDEX_PAGE_PATH));
 				request.setAttribute(
 						"errorMessage",
-						ConfigurationManager
-								.getInstance()
-								.getProperty(
-										ConfigurationManager.DOES_NOT_HAVE_ACCESS_LEVEL_MESSAGE));
+										ConfigurationManager.getProperty(ConfigurationManager.DOES_NOT_HAVE_ACCESS_LEVEL_MESSAGE));
 				dispatcher.forward(request, response);
 			}
 			chain.doFilter(request, response);
 		} else {
 			request.setAttribute(
 					"errorMessage",
-					ConfigurationManager.getInstance().getProperty(
-							ConfigurationManager.USER_NOT_FOUND_MESSAGE));
+							ConfigurationManager.getProperty(ConfigurationManager.USER_NOT_FOUND_MESSAGE));
 			RequestDispatcher dispatcher = request
-					.getRequestDispatcher(ConfigurationManager.getInstance()
-							.getProperty(ConfigurationManager.INDEX_PAGE_PATH));
+					.getRequestDispatcher(ConfigurationManager.INDEX_PAGE_PATH);
 			dispatcher.forward(request, response);
 		}
 	}

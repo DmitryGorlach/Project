@@ -6,8 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import by.epam.hotel.command.Command;
+import by.epam.hotel.entity.AccessLevel;
 import by.epam.hotel.entity.User;
-import by.epam.hotel.entity.enumeration.AccessLevel;
 import by.epam.hotel.exception.LogicException;
 import by.epam.hotel.exception.TechnicalException;
 import by.epam.hotel.logic.RegistrationLogic;
@@ -19,8 +19,7 @@ import by.epam.hotel.manager.ConfigurationManager;
 public class RegistrationCommand implements Command {
 
 	/** The Constant LOG. */
-	private static final Logger LOG = LogManager
-			.getLogger(RegistrationCommand.class);;
+	private static final Logger LOG = LogManager.getLogger(RegistrationCommand.class);;
 
 	/** The Constant PARAM_USER_NAME. */
 	private static final String PARAM_USER_NAME = "name";
@@ -76,27 +75,26 @@ public class RegistrationCommand implements Command {
 
 		try {
 			RegistrationLogic.registration(user, password, passwordAgain);
-			page = ConfigurationManager.getInstance().getProperty(
+			page = ConfigurationManager.getProperty(
 					ConfigurationManager.INDEX_PAGE_PATH);
 			request.setAttribute(
 					PARAM_ACTION_MESSAGE,
 					ConfigurationManager
-							.getInstance()
-							.getProperty(
+								.getProperty(
 									ConfigurationManager.REGISTRATION_WAS_SUCCESSFUL_MESSAGE));
 
 		} catch (TechnicalException e) {
 			LOG.error("Something goes wrong, redirect to error page.", e);
 			request.setAttribute(
 					PARAM_ERROR_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(
+					ConfigurationManager.getProperty(
 							ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
-			page = ConfigurationManager.getInstance().getProperty(
+			page = ConfigurationManager.getProperty(
 					ConfigurationManager.ERROR_PAGE_PATH);
 		} catch (LogicException e) {
 			LOG.error("Something goes wrong with registration.", e);
 			request.setAttribute(PARAM_ERROR_MESSAGE, e);
-			page = ConfigurationManager.getInstance().getProperty(
+			page = ConfigurationManager.getProperty(
 					ConfigurationManager.REGISTRATION_PAGE_PATH);
 		}
 		return page;

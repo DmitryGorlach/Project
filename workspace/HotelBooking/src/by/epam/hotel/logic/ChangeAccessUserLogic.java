@@ -2,7 +2,7 @@ package by.epam.hotel.logic;
 
 import by.epam.hotel.dao.UserDAO;
 import by.epam.hotel.dao.impl.UserDaoImpl;
-import by.epam.hotel.entity.enumeration.AccessLevel;
+import by.epam.hotel.entity.AccessLevel;
 import by.epam.hotel.exception.DAOException;
 import by.epam.hotel.exception.LogicException;
 import by.epam.hotel.exception.TechnicalException;
@@ -37,25 +37,19 @@ public class ChangeAccessUserLogic {
 		if (idUser != null) {
 			if (PARAM_EMPTY_STATUS.equals(accessLevel)) {
 				throw new LogicException(
-						ConfigurationManager
-								.getInstance()
-								.getProperty(
-										ConfigurationManager.CHOOSE_ACTION_ERROR_MESSAGE));
+						ConfigurationManager.getProperty(ConfigurationManager.CHOOSE_ACTION_ERROR_MESSAGE));
 			}
 			try {
 				userDAO.changeUserAccessById(Integer.parseInt(idUser),
 						AccessLevel.valueOf(accessLevel));
 			} catch (NumberFormatException e) {
-				throw new TechnicalException();
+				throw new TechnicalException(e);
 			} catch (DAOException e) {
-				throw new TechnicalException();
+				throw new TechnicalException(e);
 			}
 		} else {
 			throw new LogicException(
-					ConfigurationManager
-							.getInstance()
-							.getProperty(
-									ConfigurationManager.CHANGE_ACCESS_LEVEL_EXCEPTION_MESSAGE));
+			ConfigurationManager.getProperty(ConfigurationManager.CHANGE_ACCESS_LEVEL_EXCEPTION_MESSAGE));
 		}
 	}
 }

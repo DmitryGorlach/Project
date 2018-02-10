@@ -5,19 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import by.epam.hotel.dao.AbstractDAO;
 import by.epam.hotel.dao.UserDAO;
-import by.epam.hotel.dao.abstraction.AbstractDAO;
+import by.epam.hotel.entity.AccessLevel;
 import by.epam.hotel.entity.User;
-import by.epam.hotel.entity.enumeration.AccessLevel;
 import by.epam.hotel.exception.DAOException;
 
 public class UserDaoImpl extends AbstractDAO implements UserDAO {
 
-	private static final Logger LOG = LogManager.getLogger(AbstractDAO.class);
 
 	public static final String PARAM_ID_USER = "id_user";
 	public static final String PARAM_LOGIN = "login";
@@ -91,7 +88,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDAO {
 						.getString(PARAM_ACCESS)));
 			}
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -126,7 +123,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDAO {
 			}
 
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -148,7 +145,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDAO {
 			preparedStatement.setInt(3, getRegistrationInfo(user));
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -172,7 +169,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDAO {
 				personId = resultSet.getInt(PARAM_ID_PERSON);
 			}
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -196,7 +193,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDAO {
 			}
 
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -217,7 +214,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDAO {
 			preparedStatement.setInt(4, user.getAge());
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -237,7 +234,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDAO {
 			preparedStatement.setString(3, user.getEmail());
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -246,8 +243,8 @@ public class UserDaoImpl extends AbstractDAO implements UserDAO {
 	}
 
 	@Override
-	public ArrayList<User> findAllUser() throws DAOException {
-		ArrayList<User> userList = new ArrayList<User>();
+	public List<User> findAllUser() throws DAOException {
+		List<User> userList = new ArrayList<User>();
 		User user = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -272,7 +269,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDAO {
 			}
 
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -293,7 +290,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDAO {
 			preparedStatement.setInt(2, id);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);

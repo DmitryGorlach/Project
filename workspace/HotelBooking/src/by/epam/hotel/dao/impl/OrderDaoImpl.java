@@ -7,16 +7,14 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import by.epam.hotel.dao.AbstractDAO;
 import by.epam.hotel.dao.OrderDAO;
 import by.epam.hotel.dao.RoomDAO;
 import by.epam.hotel.dao.UserDAO;
-import by.epam.hotel.dao.abstraction.AbstractDAO;
 import by.epam.hotel.entity.Order;
-import by.epam.hotel.entity.enumeration.OrderStatus;
+import by.epam.hotel.entity.OrderStatus;
 import by.epam.hotel.exception.DAOException;
 
 /**
@@ -24,8 +22,7 @@ import by.epam.hotel.exception.DAOException;
  */
 public class OrderDaoImpl extends AbstractDAO implements OrderDAO {
 
-	/** The Constant LOG. */
-	private static final Logger LOG = LogManager.getLogger(OrderDaoImpl.class);
+	
 
 	/** The Constant PARAM_DATE_FORMAT. */
 	public static final String PARAM_DATE_FORMAT = "yyyy-MM-dd";
@@ -104,7 +101,7 @@ public class OrderDaoImpl extends AbstractDAO implements OrderDAO {
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -144,7 +141,7 @@ public class OrderDaoImpl extends AbstractDAO implements OrderDAO {
 				orderList.add(order);
 			}
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -167,9 +164,9 @@ public class OrderDaoImpl extends AbstractDAO implements OrderDAO {
 			preparedStatement.setInt(1, idOrder);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
-			closePreparedStatement(preparedStatement);
+					closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
 		}
 
@@ -194,7 +191,7 @@ public class OrderDaoImpl extends AbstractDAO implements OrderDAO {
 			preparedStatement.setInt(2, id);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -234,7 +231,7 @@ public class OrderDaoImpl extends AbstractDAO implements OrderDAO {
 						.getInt(PARAM_ID_ROOM)));
 			}
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);
@@ -248,12 +245,12 @@ public class OrderDaoImpl extends AbstractDAO implements OrderDAO {
 	 * @see by.epam.hotel.dao.IOrderDAO#findUserOrders(int)
 	 */
 	@Override
-	public ArrayList<Order> findUserOrders(int idUser) throws DAOException {
+	public List<Order> findUserOrders(int idUser) throws DAOException {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		UserDAO userDAO = new UserDaoImpl();
 		RoomDAO roomDAO = new RoomDaoImpl();
-		ArrayList<Order> orderList = new ArrayList<Order>();
+		List<Order> orderList = new ArrayList<Order>();
 		Connection connection = null;
 		try {
 			connection = getConnection();
@@ -276,7 +273,7 @@ public class OrderDaoImpl extends AbstractDAO implements OrderDAO {
 				orderList.add(order);
 			}
 		} catch (SQLException e) {
-			throw new DAOException();
+			throw new DAOException(e);
 		} finally {
 			closePreparedStatement(preparedStatement);
 			releaseConnection(connection);

@@ -3,8 +3,8 @@ package by.epam.hotel.command.impl;
 import javax.servlet.http.HttpServletRequest;
 
 import by.epam.hotel.command.Command;
+import by.epam.hotel.entity.AccessLevel;
 import by.epam.hotel.entity.User;
-import by.epam.hotel.entity.enumeration.AccessLevel;
 import by.epam.hotel.manager.ConfigurationManager;
 
 /**
@@ -55,21 +55,21 @@ public class PageCommand implements Command {
 		String pageParam = request.getParameter(PARAM_PAGE);
 		switch (pageParam) {
 		case PARAM_LOGIN_PAGE:
-			return ConfigurationManager.getInstance().getProperty(
+			return ConfigurationManager.getProperty(
 					ConfigurationManager.LOGIN_PAGE_PATH);
 		case PARAM_REGISTRATION_PAGE:
-			return ConfigurationManager.getInstance().getProperty(
+			return ConfigurationManager.getProperty(
 					ConfigurationManager.REGISTRATION_PAGE_PATH);
 		case PARAM_CLIENT_PAGE:
-			return ConfigurationManager.getInstance().getProperty(
+			return ConfigurationManager.getProperty(
 					ConfigurationManager.CLIENT_PAGE_PATH);
 		case PARAM_ADMIN_PAGE:
-			return ConfigurationManager.getInstance().getProperty(
+			return ConfigurationManager.getProperty(
 					ConfigurationManager.ADMIN_PAGE_PATH);
 		case PARAM_CABINET_PAGE:
 			return checkRole(request);
 		default:
-			return ConfigurationManager.getInstance().getProperty(
+			return ConfigurationManager.getProperty(
 					ConfigurationManager.INDEX_PAGE_PATH);
 		}
 	}
@@ -87,21 +87,21 @@ public class PageCommand implements Command {
 		if (check != null) {
 			switch (check) {
 			case ADMIN:
-				return ConfigurationManager.getInstance().getProperty(
+				return ConfigurationManager.getProperty(
 						ConfigurationManager.ADMIN_PAGE_PATH);
 			case CLIENT:
-				return ConfigurationManager.getInstance().getProperty(
+				return ConfigurationManager.getProperty(
 						ConfigurationManager.CLIENT_PAGE_PATH);
 			case GUEST:
 				request.setAttribute(
 						"errorMessage",
-						ConfigurationManager.getInstance().getProperty(
+						ConfigurationManager.getProperty(
 								ConfigurationManager.BANNED_MESSAGE));
-				return ConfigurationManager.getInstance().getProperty(
+				return ConfigurationManager.getProperty(
 						ConfigurationManager.INDEX_PAGE_PATH);
 			}
 		}
-		return ConfigurationManager.getInstance().getProperty(
+		return ConfigurationManager.getProperty(
 				ConfigurationManager.ERROR_PAGE_PATH);
 	}
 }

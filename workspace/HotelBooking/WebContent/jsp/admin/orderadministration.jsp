@@ -58,7 +58,7 @@
 
 	<!-- Order administration -->
 	<div class="container pull-center" id="container-wraper">
-		<table class="table table-hover">
+		<table class="table  table-borderedtable-hover">
 			<thead>
 				<tr>
 					<th><fmt:message key="orderadministration.orders" /></th>

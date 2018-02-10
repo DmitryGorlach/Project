@@ -1,6 +1,6 @@
 package by.epam.hotel.command.impl;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,19 +37,20 @@ public class ShowAllRoomCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request) {
 		String page = null;
-		ArrayList<Room> listRoom = null;
+		List<Room> listRoom = null;
 		try {
 			listRoom = FindRoomLogic.findAllRoom();
 			request.setAttribute(PARAM_LIST_ROOM, listRoom);
-			page = ConfigurationManager.getInstance().getProperty(
+			page = ConfigurationManager.getProperty(
 					ConfigurationManager.ROOM_ADMINISTRATION_PATH);
+			LOG.info("Show all rooms'...");
 		} catch (TechnicalException e) {
 			LOG.error("Something goes wrong, redirect to error page.", e);
 			request.setAttribute(
 					PARAM_ERROR_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(
+					ConfigurationManager.getProperty(
 							ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
-			page = ConfigurationManager.getInstance().getProperty(
+			page = ConfigurationManager.getProperty(
 					ConfigurationManager.ERROR_PAGE_PATH);
 		}
 		return page;

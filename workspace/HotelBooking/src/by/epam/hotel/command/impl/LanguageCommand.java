@@ -34,7 +34,7 @@ public class LanguageCommand implements Command {
 		String lang = (String) request.getParameter(PARAM_LANG);
 		LOG.info("Add to session language parametr.");
 		session.setAttribute(PARAM_LANG, lang);
-		return ConfigurationManager.getInstance().getProperty(
+		return ConfigurationManager.getProperty(
 				ConfigurationManager.INDEX_PAGE_PATH);
 
 	}

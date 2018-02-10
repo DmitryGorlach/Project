@@ -1,6 +1,6 @@
 package by.epam.hotel.command.impl;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,8 +20,7 @@ import by.epam.hotel.manager.ConfigurationManager;
 public class ShowClientOrderCommand implements Command {
 
 	/** The Constant LOG. */
-	private static final Logger LOG = LogManager
-			.getLogger(ShowClientOrderCommand.class);
+	private static final Logger LOG = LogManager.getLogger(ShowClientOrderCommand.class);
 
 	/** The Constant PARAM_CLIENT_ORDER. */
 	private static final String PARAM_CLIENT_ORDER = "clientOrder";
@@ -42,7 +41,7 @@ public class ShowClientOrderCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request) {
 		String page = null;
-		ArrayList<Order> clientOrder = null;
+		List<Order> clientOrder = null;
 		User user = (User) request.getSession().getAttribute(PARAM_USER);
 		try {
 			clientOrder = FindOrderLogic.findClientOrder(user.getId());
@@ -51,22 +50,17 @@ public class ShowClientOrderCommand implements Command {
 			} else {
 				request.setAttribute(
 						PARAM_ERROR_MESSAGE,
-						ConfigurationManager
-								.getInstance()
-								.getProperty(
-										ConfigurationManager.DOES_NOT_HAVE_CLIENT_ORDER_MESSAGE));
+						ConfigurationManager.getProperty(ConfigurationManager.DOES_NOT_HAVE_CLIENT_ORDER_MESSAGE));
 			}
-			page = ConfigurationManager.getInstance().getProperty(
-					ConfigurationManager.CLIENT_ORDER_LIST_PATH);
+			page = ConfigurationManager.getProperty(ConfigurationManager.CLIENT_ORDER_LIST_PATH);
 		} catch (TechnicalException e) {
 			LOG.error("Something goes wrong, redirect to error page.", e);
-			request.setAttribute(
-					PARAM_ERROR_MESSAGE,
-					ConfigurationManager.getInstance().getProperty(
-							ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
-			page = ConfigurationManager.getInstance().getProperty(
-					ConfigurationManager.ERROR_PAGE_PATH);
+			request.setAttribute(PARAM_ERROR_MESSAGE,
+					ConfigurationManager.getProperty(ConfigurationManager.LOGIC_EXCEPTION_ERROR_MESSAGE));
+			
+			page = ConfigurationManager.getProperty(ConfigurationManager.ERROR_PAGE_PATH);
 		}
+		
 		return page;
 	}
 
